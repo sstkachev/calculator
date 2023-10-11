@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_calc/calc_button.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -285,7 +286,9 @@ class _MainScreenState extends State<MainScreen> {
               ButtonCircle(
                 buttonText: '=',
                 buttonFunc: () {
-                  setState(() {});
+                  setState(() {
+                    getResult();
+                  });
                 },
                 buttonTextColor: operationTextColor,
                 buttonColor: MaterialStateProperty.all(
@@ -300,5 +303,13 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     );
+  }
+
+  void getResult() {
+    Parser p = Parser();
+    Expression exp = p.parse(result);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+    result = eval.toString();
   }
 }
